@@ -1,6 +1,7 @@
 %% Access Raw image folder and crop individual frames
 
 FolderPath  = '/vmd/hossein_yazdi/Speckle Imaging/Mouse/2-20-2020/ActualData/Camera/';
+addpath(FolderPath)
 ImageFiles = dir(fullfile(FolderPath,'*.tif')); 
 ImageFiles = ImageFiles(arrayfun(@(x) ~endsWith(x.name, {'.', '..'}), ImageFiles));
 
@@ -79,15 +80,18 @@ for ii = floor(linspace(1,300,31))
                 [ctrs, grain_size2] = speckle_ctrs(gather(im_t));
                 ctrs1(kk,t) = ctrs(1);
                 ctrs2(kk,t) = ctrs(2);
-                grain_size(kk,t) = grain_size;
+                grain_size(kk,t) = grain_size2;
               
             end
             t= t+1;
         end
         if ii==1
-            data_all(:, ii:ii+t-2) = final_data;
+            CTRS1(:, ii:ii+t-2) = ctrs1;
+            CTRS2(:, ii:ii+t-2) = ctrs2;
+            GRAIN_SIZE(:, ii:ii+t-2) = grain_size;
         end
-        data_all(:, ii+1:ii+t-1) = final_data;
+        CTRS1(:, ii+1:ii+t-1) = ctrs1;
+        CTRS2(:, ii+1:ii+t-1) = ctrs2;
+        GRAIN_SIZE(:, ii+1:ii+t-1) = grain_size;
 end
-
 toc

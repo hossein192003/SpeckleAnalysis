@@ -12,7 +12,7 @@ f1 = fspecial('gaussian', 15,8);
 img2 = imfilter(img, f1);
 
 %%
-img3 = img2 ./ img;
+img3 = img ./ img2;
 img3 = img3(10:end-10, 10:end-10); % Bright boundry removal
 
 %%
@@ -60,10 +60,8 @@ sigma2=fftshift(ifft2(fft2(D2).*Fkernel));
 out=M.^2./sigma2;
 % figure; imagesc(out); colormap('gray'); axis image; colorbar
 
-% flatten the image
-out2 = out ./ img;
-out2 = out2(10:end-10, 10:end-10); % Bright boundry removal
-ctrs2 = std2(out2) / mean2(out2);
+out = out(10:end-10, 10:end-10); % Bright boundry removal
+ctrs2 = std2(out) / mean2(out);
 % clip_lo = quantile(out2(:), 0.01);
 % clip_hi = quantile(out2(:), 0.99);
 % figure; imagesc(out2, [clip_lo clip_hi]); colormap('gray'); axis image; colorbar
@@ -98,9 +96,9 @@ ctrs2 = std2(out2) / mean2(out2);
 %     pp = pp + 1; 
 % end
 
-B = normxcorr2(out2, out2);
+B = normxcorr2(out, out);
 % figure; imagesc(B); colormap('gray'); axis image; colorbar
-p = find(B == max(B(:)))
+p = find(B == max(B(:)));
 pp = p;
 while B(pp) >= (1/exp(1)^2)
     grain_size2 = pp - p; 
